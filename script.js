@@ -61,18 +61,35 @@ function init() {
     renderProducts();
 }
 
-// Render Products
-function renderProducts() {
-    productGrid.innerHTML = products.map(product => `
-        <div class="product-card">
-            <div class="product-image-container">
-                <img src="${product.image}" alt="${product.name}" class="product-img">
-            </div>
-            <h3 class="product-title">${product.name}</h3>
-            <span class="product-price">$${product.price.toFixed(2)}</span>
-            <button class="add-btn" onclick="addToCart(${product.id})">Add to Cart</button>
+// Render Skeletons
+function renderSkeletons(count = 6) {
+    productGrid.innerHTML = Array(count).fill(0).map(() => `
+        <div class="skeleton-card">
+            <div class="skeleton skeleton-img"></div>
+            <div class="skeleton skeleton-text"></div>
+            <div class="skeleton skeleton-text short"></div>
+            <div class="skeleton skeleton-btn"></div>
         </div>
     `).join('');
+}
+
+// Render Products
+function renderProducts() {
+    renderSkeletons();
+    
+    // Simulate network delay
+    setTimeout(() => {
+        productGrid.innerHTML = products.map(product => `
+            <div class="product-card">
+                <div class="product-image-container">
+                    <img src="${product.image}" alt="${product.name}" class="product-img">
+                </div>
+                <h3 class="product-title">${product.name}</h3>
+                <span class="product-price">$${product.price.toFixed(2)}</span>
+                <button class="add-btn" onclick="addToCart(${product.id})">Add to Cart</button>
+            </div>
+        `).join('');
+    }, 2000); // 2 seconds delay
 }
 
 // Add to Cart
